@@ -1,8 +1,11 @@
 # Ignore sqlite files.
 db/*.sqlite
 
-# Ignore uploaded files
+# Ignore uploaded files.
 uploads/*
 
-# Ignore dependencies
+# Ignore dependencies.
 node_modules/*
+
+# Ignore log files.
+*.log
