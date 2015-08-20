@@ -1,0 +1,8 @@
+# Ignore sqlite files.
+db/*.sqlite
+
+# Ignore uploaded files
+uploads/*
+
+# Ignore dependencies
+node_modules/*
