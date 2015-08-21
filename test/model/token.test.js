@@ -7,7 +7,8 @@ var app = require('../../app');
 
 describe('Token', function() {
   beforeEach(function () {
-    this.Token = require('../../models').Token;
+    this.Token = app.get('models').Token;
+    this.Token.destroy({where: true});
   });
 
   describe('on token validation', function(){
@@ -19,7 +20,7 @@ describe('Token', function() {
       token = this.Token;
 
       token.create({key: 'simple_key', service: 'service'}).then(function(valid_token) {
-        token.create({key: valid_token.key, service: valid_token.service}).should.be.rejectedWith('service cannot be null').notify(done);
+        token.create({key: valid_token.key, service: valid_token.service}).should.be.rejectedWith('Validation error').notify(done);
       });
     });
   });
