@@ -1,5 +1,6 @@
 'use strict';
 
+var Sequelize = require("sequelize")
 var hat = require('hat');
 
 module.exports = function(sequelize, DataTypes) {
@@ -15,8 +16,11 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     classMethods: {
-      generate: function(service, callback) {
-           
+      generate: function(service) {
+        return Token.create({key: hat(), service: service})
+          .catch(Sequelize.ValidationError, function(err) {
+            Token.generate(service);
+          })      
       }
     }
   });

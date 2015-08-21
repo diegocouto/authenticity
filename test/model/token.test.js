@@ -26,8 +26,19 @@ describe('Token', function() {
   });
 
   describe('on successful creation', function() {
-    it('returns an unique token key.');
-    it('returns token key service.');
-    it('returns token key creation date.');
+    it('generates a valid token given a service name.', function(){
+      return this.Token.generate('service').then(function(token) {
+        token.key.should.not.be.null;
+        token.service.should.be.equal('service');
+      });
+    });
+
+    it('returns a token key, service and creation date.', function(){
+      return this.Token.create({key: 'simple_key', service: 'service'}).then(function(token) {
+        token.key.should.be.equal('simple_key');
+        token.service.should.be.equal('service');
+        token.createdAt.should.be.an.instanceOf(Date);
+      });
+    });
   });
 });
