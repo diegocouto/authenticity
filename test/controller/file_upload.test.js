@@ -5,8 +5,8 @@ var status = require('http-status');
 var app = require('../../app');
 var api = supertest(app);
 
-describe('File', function() {
-  describe('on auth problem', function() {
+describe('File Upload', function() {
+  describe('on auth problems', function() {
     it('returns bad request if an authorization token is undefined.', function(done) {
       api.post('/api/v1/files')
         .expect(status.BAD_REQUEST, done);
@@ -39,11 +39,6 @@ describe('File', function() {
   });
 
   describe('on successful upload', function() {
-    it('returns file description when set.');
-    it('returns file creation date.');
-    it('returns file path.');
     it('returns file url.');
-    it('returns a random file key if a file key is not informed.');
-    it('returns the given file key if provided.');
   });
 });

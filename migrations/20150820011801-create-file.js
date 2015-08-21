@@ -9,13 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       key: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       description: {
         type: Sequelize.TEXT
       },
       path: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
