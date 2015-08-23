@@ -16,7 +16,7 @@ describe('Token', function() {
       this.Token.create({key: 'simple_key'}).should.be.rejectedWith('service cannot be null').notify(done);
     });
 
-    it('throw exception when creating a non-unique key', function(done){
+    it('throw exception when creating a token with non-unique key', function(done){
       token = this.Token;
 
       token.create({key: 'simple_key', service: 'service'}).then(function(valid_token) {

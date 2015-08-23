@@ -2,9 +2,16 @@
 
 module.exports = function(sequelize, DataTypes) {
   var File = sequelize.define('File', {
-    key: DataTypes.STRING,
     description: DataTypes.TEXT,
-    path: DataTypes.STRING
+    key: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    path: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
 
   return File;
