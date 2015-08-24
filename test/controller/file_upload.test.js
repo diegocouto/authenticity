@@ -8,11 +8,14 @@ var api = supertest(app);
 describe('File Upload', function() {
   var valid_token;
 
-  before(function(){
+  before(function(done){
     Token = app.get('models').Token;
 
     Token.destroy({where: true});
-    Token.generate('test').then(function(token){ valid_token = token });
+    Token.generate('test').then(function(token){ 
+      valid_token = token;
+      done();
+    });
   });
 
   describe('on auth problems', function() {

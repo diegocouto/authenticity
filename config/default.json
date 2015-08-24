@@ -1,0 +1,8 @@
+{
+  "File": {
+    "limits": {
+      "size": "10485760",
+      "types": ["application/pdf", "image/jpeg", "image/png", "image/tiff"]
+    }
+  }
+}
