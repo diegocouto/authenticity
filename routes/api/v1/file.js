@@ -14,18 +14,25 @@ var Token = require('models').Token;
 router.post('/files', uploader, function(req, res, done) {
   token_key = req.body.token_key
 
-  if(!token_key || !req.file)
+  if(!token_key || !req.file || !req.body.file_key)
     return res.status(status.BAD_REQUEST).end();
 
   Token.findOne({where: {key: token_key}}).then(function(token){
     if(!token) {
       fs.unlink('uploads/' + req.file.filename);
-      res.status(status.UNAUTHORIZED).end();
+      return res.status(status.UNAUTHORIZED).end();
     }
 
-    //TODO create file
+    File.create({
+      description: req.body.description,
+      key: req.body.file_key,
+      path: req.file.path
+    }).then(function(file){
+      res.json(file);
+    });
+
     done();
-  });  
+  });
 });
 
 module.exports = router;
