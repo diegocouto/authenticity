@@ -26,7 +26,7 @@ describe('File Upload', function() {
     it('returns bad request if an authorization token is undefined.', function(done) {
       api.post('/api/v1/files')
         .field('file_key', 'TST-12345-67891-01112')
-        .attach('file', 'test/fixtures/sample.txt')
+        .attach('file', 'test/fixtures/valid.jpg')
         .expect(status.BAD_REQUEST, done);
     });
 
@@ -34,7 +34,7 @@ describe('File Upload', function() {
       api.post('/api/v1/files')
         .field('token_key', 'invalid_key')
         .field('file_key', 'TST-12345-67891-01112')
-        .attach('file', 'test/fixtures/sample.txt')
+        .attach('file', 'test/fixtures/valid.jpg')
         .end(function(err, res) {
           expect(res.status).to.be.equal(status.UNAUTHORIZED);
           done();
@@ -57,24 +57,34 @@ describe('File Upload', function() {
     it('return bad request if a file key is not provided.', function(done){
       api.post('/api/v1/files')
         .field('token_key', valid_token.key)
-        .attach('file', 'test/fixtures/sample.txt')
+        .attach('file', 'test/fixtures/valid.jpg')
         .end(function(err, res) {
           expect(res.status).to.be.equal(status.BAD_REQUEST);
           done();
         });
     });
 
-    it('returns unprocessable entity if file size is too large.');
+    it('returns bad request if file size is too large.', function(done){
+        api.post('/api/v1/files')
+          .field('token_key', valid_token.key)
+          .field('file_key', 'TST-12345-67891-01112')
+          .attach('file', 'test/fixtures/invalid.jpg')
+          .end(function(err, res) {
+            expect(res.status).to.be.equal(status.BAD_REQUEST);
+            done();
+          });      
+    });
+
     it('returns unprocessable entity if file type is not allowed.');
   });
 
   describe('on upload problems', function(){
-    it('returns unprocessable entity if the provided file key already exists.', function(done) {
+    it('returns unprocessable entity if the provided file key already exists.', function(done){
       this.File.create({key: "unique_key", path: "sample_path"}).then(function(file){
         api.post('/api/v1/files')
           .field('token_key', valid_token.key)
           .field('file_key', file.key)
-          .attach('file', 'test/fixtures/sample.txt')
+          .attach('file', 'test/fixtures/valid.jpg')
           .end(function(err, res) {
             expect(res.status).to.be.equal(status.UNPROCESSABLE_ENTITY);
             done();
@@ -85,5 +95,9 @@ describe('File Upload', function() {
 
   describe('on successful upload', function() {
     it('returns file url, key and creation date.');
+  });
+
+  describe('on file register delete', function() {
+    it('removes register and associated file.');
   });
 });

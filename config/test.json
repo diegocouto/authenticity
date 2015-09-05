@@ -3,7 +3,7 @@
     "multer": {
       "dest": "uploads/",
       "limits": {
-        "fileSize": 10485760
+        "fileSize": 1000000
       }
     },
     

@@ -4,9 +4,10 @@ var fs = require('fs');
 var express = require('express');
 var status = require('http-status');
 var multer = require('multer');
+var config = require('config');
 
-var uploader = multer({dest: 'uploads/'}).single('file');
 var router = express.Router();
+var uploader = multer(config.get('File.multer')).single('file');
 
 var Token = require('models').Token;
 var File = require('models').File;
