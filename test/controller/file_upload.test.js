@@ -10,9 +10,9 @@ describe('File Upload', function() {
 
   before(function(done){
     Token = app.get('models').Token;
-    File = app.get('models').File;
+    this.File = app.get('models').File;
 
-    File.destroy({where: true});
+    this.File.destroy({where: true});
 
     Token.destroy({where: true}).then(function(){
       Token.generate('test').then(function(token){ 
@@ -69,7 +69,18 @@ describe('File Upload', function() {
   });
 
   describe('on upload problems', function(){
-    it('returns unprocessable entity if the provided file key already exists.')
+    it('returns unprocessable entity if the provided file key already exists.', function(done) {
+      this.File.create({key: "unique_key", path: "sample_path"}).then(function(file){
+        api.post('/api/v1/files')
+          .field('token_key', valid_token.key)
+          .field('file_key', file.key)
+          .attach('file', 'test/fixtures/sample.txt')
+          .end(function(err, res) {
+            expect(res.status).to.be.equal(status.UNPROCESSABLE_ENTITY);
+            done();
+          });
+      });
+    });
   });
 
   describe('on successful upload', function() {
