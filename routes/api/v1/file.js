@@ -1,6 +1,5 @@
 require('rootpath')();
 
-var fs = require('fs');
 var express = require('express');
 var status = require('http-status');
 var multer = require('multer');
@@ -17,19 +16,24 @@ router.post('/files', uploader, function(req, res, done) {
   token_key = req.body.token_key
   file_key = req.body.file_key
 
-  if(!token_key || !req.file || !file_key)
+  if(!token_key || !file_key || !req.file) {
+    if(req.file)
+      File.destroyFromFS(req.file.path);
+    
     return res.status(status.BAD_REQUEST).end();
+  }
 
-  Token.findOne({where: {key: token_key}}).then(function(token){
+  Token.findOne({where: {key: token_key}}).then(function(token) {
     if(!token) {
-      fs.unlink('uploads/' + req.file.filename);
+      File.destroyFromFS(req.file.path);
       return res.status(status.UNAUTHORIZED).end();
     }
 
     File.create({description: req.body.description, key: file_key, path: req.file.path})
-      .then(function(file){
+      .then(function(file) {
         res.json(file);
       }).catch(function(err) {
+        File.destroyFromFS(req.file.path);
         return res.status(status.UNPROCESSABLE_ENTITY).send(err).end();
       });
   });

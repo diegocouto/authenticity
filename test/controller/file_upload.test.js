@@ -1,6 +1,7 @@
 var expect = require('chai').expect;
 var supertest = require('supertest');
 var status = require('http-status');
+var fs = require('fs');
 
 var app = require('../../app');
 var api = supertest(app);
@@ -12,14 +13,17 @@ describe('File Upload', function() {
     Token = app.get('models').Token;
     this.File = app.get('models').File;
 
-    this.File.destroy({where: true});
-
     Token.destroy({where: true}).then(function(){
       Token.generate('test').then(function(token){ 
         valid_token = token;
         done();
       });
     });
+  });
+
+  afterEach(function(done){
+    this.File.destroy({where: true, individualHooks: true});
+    done();
   });
 
   describe('on auth problems', function() {
@@ -80,7 +84,7 @@ describe('File Upload', function() {
 
   describe('on upload problems', function(){
     it('returns unprocessable entity if the provided file key already exists.', function(done){
-      this.File.create({key: "unique_key", path: "sample_path"}).then(function(file){
+      this.File.create({key: 'unique_key', path: 'sample_path'}).then(function(file){
         api.post('/api/v1/files')
           .field('token_key', valid_token.key)
           .field('file_key', file.key)
@@ -98,6 +102,25 @@ describe('File Upload', function() {
   });
 
   describe('on file register delete', function() {
-    it('removes register and associated file.');
+    it('removes register and associated file.', function(done){
+      var File = this.File;
+
+      api.post('/api/v1/files')
+        .field('token_key', valid_token.key)
+        .field('file_key', 'unique_key')
+        .attach('file', 'test/fixtures/valid.jpg')
+        .end(function(err, res) {
+          expect(fs.existsSync(res.body.path)).to.be.true;
+          expect(res.status).to.be.equal(status.OK);
+
+          File.find({where: {id: res.body.id}}).then(function(file){
+            file.destroy().then(function(){
+              expect(fs.existsSync(file.path)).to.be.false;
+            });
+          });
+                    
+          done();
+        });
+    });
   });
 });
