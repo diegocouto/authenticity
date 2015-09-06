@@ -17,16 +17,18 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     hooks: {
       afterDestroy: function(file, opts, next) {
-        File.destroyFromFS(file.path)
-        next();
+        File.destroyFromFS(file.path, next)
       }
     },
 
     classMethods: { 
-      destroyFromFS: function(fullPath) {
+      destroyFromFS: function(fullPath, next) {
         fs.exists(fullPath, function(exists) {
-          if(exists)
-            fs.unlink(fullPath);
+          if(exists) {
+            fs.unlink(fullPath, next);
+          } else {
+            next()
+          }
         }); 
       }
     }

@@ -25,16 +25,18 @@ router.post('/files', uploader, function(req, res, done) {
 
   Token.findOne({where: {key: token_key}}).then(function(token) {
     if(!token) {
-      File.destroyFromFS(req.file.path);
-      return res.status(status.UNAUTHORIZED).end();
+      return File.destroyFromFS(req.file.path, function(){
+        res.status(status.UNAUTHORIZED).end();
+      });
     }
 
     File.create({description: req.body.description, key: file_key, path: req.file.path})
       .then(function(file) {
         res.json(file);
       }).catch(function(err) {
-        File.destroyFromFS(req.file.path);
-        return res.status(status.UNPROCESSABLE_ENTITY).send(err).end();
+        File.destroyFromFS(req.file.path, function(){
+          res.status(status.UNPROCESSABLE_ENTITY).send(err).end()
+        });        
       });
   });
 });

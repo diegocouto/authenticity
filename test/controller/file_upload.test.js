@@ -9,22 +9,20 @@ var api = supertest(app);
 describe('File Upload', function() {
   var valid_token;
 
-  before(function(done){
+  before(function(){
     Token = app.get('models').Token;
     this.File = app.get('models').File;
 
-    Token.destroy({where: true}).then(function(){
+    return Token.destroy({where: true}).then(function(){
       Token.generate('test').then(function(token){ 
         valid_token = token;
-        done();
       });
     });
   });
 
-  afterEach(function(done){
-    this.File.destroy({where: true, individualHooks: true});
-    done();
-  });
+  afterEach(function(){
+    return this.File.destroy({where: true, individualHooks: true});
+  });  
 
   describe('on auth problems', function() {
     it('returns bad request if an authorization token is undefined.', function(done) {
@@ -98,7 +96,20 @@ describe('File Upload', function() {
   });
 
   describe('on successful upload', function() {
-    it('returns file url, key and creation date.');
+    it('store file and returns file info like key and creation date.', function(done){
+      api.post('/api/v1/files')
+        .field('token_key', valid_token.key)
+        .field('file_key', 'unique_key')
+        .attach('file', 'test/fixtures/valid.jpg')
+        .end(function(err, res) {
+          expect(res.status).to.be.equal(status.OK);
+          expect(fs.existsSync(res.body.path)).to.be.true;
+          expect(res.body.key).to.be.equal('unique_key');
+          expect(res.body.created_at).to.not.be.null;
+                    
+          done();
+        });      
+    });
   });
 
   describe('on file register delete', function() {
@@ -116,10 +127,9 @@ describe('File Upload', function() {
           File.find({where: {id: res.body.id}}).then(function(file){
             file.destroy().then(function(){
               expect(fs.existsSync(file.path)).to.be.false;
+              done();
             });
           });
-                    
-          done();
         });
     });
   });
