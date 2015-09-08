@@ -32,6 +32,7 @@
     "hat": "0.0.3",
     "http-status": "^0.2.0",
     "jade": "~1.11.0",
+    "mime-types": "^2.1.6",
     "morgan": "~1.6.1",
     "multer": "^1.0.3",
     "rootpath": "^0.1.2",

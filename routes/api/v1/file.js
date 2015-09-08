@@ -4,9 +4,27 @@ var express = require('express');
 var status = require('http-status');
 var multer = require('multer');
 var config = require('config');
+var crypto = require('crypto');
+var mime = require('mime-types');
+
+var storage = multer.diskStorage({
+  destination: config.get('File.multer.dest'),
+  filename: function (req, file, cb) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      if (err) return cb(err)
+
+      cb(null, raw.toString('hex') + '.' + mime.extension(file.mimetype))
+    })
+  }
+})
 
 var router = express.Router();
-var uploader = multer(config.get('File.multer')).single('file');
+var uploader = multer({
+  storage: storage,
+  limits: {
+    fileSize: config.get('File.multer.limits.fileSize')
+  }
+}).single('file');
 
 var Token = require('models').Token;
 var File = require('models').File;
