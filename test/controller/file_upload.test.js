@@ -74,10 +74,19 @@ describe('File Upload', function() {
           .end(function(err, res) {
             expect(res.status).to.be.equal(status.BAD_REQUEST);
             done();
-          });      
+          });
     });
 
-    it('returns unprocessable entity if file type is not allowed.');
+    it('returns unprocessable entity if file type is not allowed.', function(done){
+      api.post('/api/v1/files')
+        .field('token_key', valid_token.key)
+        .field('file_key', 'TST-12345-67891-01112')
+        .attach('file', 'test/fixtures/invalid.txt')
+        .end(function(err, res) {
+          expect(res.status).to.be.equal(status.UNPROCESSABLE_ENTITY);
+          done();
+        });
+    });
   });
 
   describe('on upload problems', function(){

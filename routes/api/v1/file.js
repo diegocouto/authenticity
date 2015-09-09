@@ -41,6 +41,9 @@ router.post('/files', uploader, function(req, res, done) {
     return res.status(status.BAD_REQUEST).end();
   }
 
+  if(config.get('File.types').indexOf(req.file.mimetype) < 0)
+    return res.status(status.UNPROCESSABLE_ENTITY).send('This file has a not allowed MIME type.').end()
+
   Token.findOne({where: {key: token_key}}).then(function(token) {
     if(!token) {
       return File.destroyFromFS(req.file.path, function(){
