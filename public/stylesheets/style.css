@@ -1,8 +1,53 @@
+@import url("normalize.css");
+@import url("skeleton.css");
+
+.container {
+  max-width: 680px;
+}
+
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Lato", sans-serif;
+  background-color: #2C3E50;
 }
 
 a {
   color: #00B7FF;
+}
+
+.description h4 {
+  color: #8297AD;
+  text-align: center;
+  font-size: 1.8em;
+  padding: 40px 10px;
+  margin-bottom: 0;
+}
+
+.form-control {
+  background-color: #273646;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-control label { color: #8297AD; }
+.form-control input {
+  margin-bottom: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #303F50;
+  border-radius: 0;
+  color: #FFF;
+  font-size: 22px;
+  font-weight: bold;
+}
+.form-control input:hover, .form-control input:focus {
+  border: none;
+  border-bottom: 1px solid #303F50;
+}
+
+input[type="submit"] {
+  height: auto;
+  padding: 10px;
 }

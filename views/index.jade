@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div(class="container")
+    div(class="row")
+      div(class="twelve columns description")
+        h4 A lightweight application to guarantee files authenticity
+
+
+    div(class="row")
+      div(class="twelve columns")
+        form
+          div(class="row form-control")
+            label(for="file-key") Document key
+            input(type="text", id="file-key", class="u-full-width")
+
+          div(class="row")
+            input(type="submit", value="Check", class="button-primary u-full-width")
