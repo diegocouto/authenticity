@@ -42,7 +42,9 @@ router.post('/files', uploader, function(req, res, done) {
   }
 
   if(config.get('File.types').indexOf(req.file.mimetype) < 0)
-    return res.status(status.UNPROCESSABLE_ENTITY).send('This file has a not allowed MIME type.').end()
+    return File.destroyFromFS(req.file.path, function(){
+      res.status(status.UNPROCESSABLE_ENTITY).send('This file has a not allowed MIME type.').end()
+    });
 
   Token.findOne({where: {key: token_key}}).then(function(token) {
     if(!token) {
@@ -59,6 +61,17 @@ router.post('/files', uploader, function(req, res, done) {
           res.status(status.UNPROCESSABLE_ENTITY).send(err).end()
         });        
       });
+  });
+});
+
+/* GET file info by its key */
+router.get('/files/:file_key', function(req, res, done) {
+  File.findOne({where: {key: req.params.file_key}}).then(function(file) {
+      if(file)
+        return res.json(file);
+
+      res.status(status.NOT_FOUND).end();
+      done();
   });
 });
 
