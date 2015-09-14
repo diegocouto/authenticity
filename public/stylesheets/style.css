@@ -79,6 +79,15 @@ button[type="submit"] {
   padding: 10px;
 }
 
+.spin {
+  margin-right: 5px;
+  animation: spin 2s infinite linear;
+}
+
+.ng-invalid button[type="submit"] {
+  opacity: 0.3;
+}
+
 @keyframes shake {
   0% { transform: translate(0px); }
   17% { transform: translate(10px); }
@@ -87,4 +96,9 @@ button[type="submit"] {
   68% { transform: translate(-6px); }
   85% { transform: translate(3px); }
   100% { transform: translate(0px); }
+}
+
+@keyframes spin {
+    0%  {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}   
 }
