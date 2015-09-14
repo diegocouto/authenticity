@@ -3,16 +3,20 @@ extends layout
 block content
   div(class="container")
     div(class="row")
+      div(class="twelve columns", id="logo-container")
+        a(href="#" id="logo") 
+          i(class="iconicstroke-award-stroke")
+
       div(class="twelve columns description")
         h4 A lightweight application to guarantee files authenticity
 
 
     div(class="row")
-      div(class="twelve columns")
+      div(class="twelve columns" ng-controller="mainController")
         form
           div(class="row form-control")
             label(for="file-key") Document key
-            input(type="text", id="file-key", class="u-full-width")
+            input(type="text", id="file-key", class="u-full-width" ng-model="formData.file_key")
 
           div(class="row")
-            input(type="submit", value="Check", class="button-primary u-full-width")
+            button(type="submit", class="button-primary u-full-width" ng-click="checkDocument()") Check

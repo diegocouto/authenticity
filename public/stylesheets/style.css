@@ -5,6 +5,10 @@
   max-width: 680px;
 }
 
+[class*="iconicstroke-"]:before {
+  font-family: 'IconicStroke', sans-serif;
+}
+
 body {
   padding: 50px;
   font: 14px "Lato", sans-serif;
@@ -13,6 +17,24 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+#logo-container { text-align: center; padding: 20px }
+#logo i { font-style: normal !important; }
+#logo {
+  font-size: 4em;
+  text-decoration: none;
+  background-color: #8297AD;
+  color: #2C3E50;
+  padding: 5px 27px;
+  border-radius: 40px;
+}
+
+#logo:hover {
+  -webkit-animation: shake 0.7s;
+  -moz-animation: shake 0.7s;
+  -o-animation: shake 0.7s;
+  animation: shake 0.7s;
 }
 
 .description h4 {
@@ -25,9 +47,14 @@ a {
 
 .form-control {
   background-color: #273646;
+  border: 2px solid #273646;
   border-radius: 4px;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+.active {
+  border: 2px solid #33C3F0;
 }
 
 .form-control label { color: #8297AD; }
@@ -47,7 +74,17 @@ a {
   border-bottom: 1px solid #303F50;
 }
 
-input[type="submit"] {
+button[type="submit"] {
   height: auto;
   padding: 10px;
+}
+
+@keyframes shake {
+  0% { transform: translate(0px); }
+  17% { transform: translate(10px); }
+  34% { transform: translate(-10px); }
+  51% { transform: translate(6px); }
+  68% { transform: translate(-6px); }
+  85% { transform: translate(3px); }
+  100% { transform: translate(0px); }
 }
