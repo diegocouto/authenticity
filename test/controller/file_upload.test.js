@@ -91,16 +91,22 @@ describe('File Upload', function() {
 
   describe('on upload problems', function(){
     it('returns unprocessable entity if the provided file key already exists.', function(done){
-      this.File.create({key: 'unique_key', path: 'sample_path'}).then(function(file){
-        api.post('/api/v1/files')
-          .field('token_key', valid_token.key)
-          .field('file_key', file.key)
-          .attach('file', 'test/fixtures/valid.jpg')
-          .end(function(err, res) {
-            expect(res.status).to.be.equal(status.UNPROCESSABLE_ENTITY);
-            done();
-          });
-      });
+      api.post('/api/v1/files')
+        .field('token_key', valid_token.key)
+        .field('file_key', 'unique_key')
+        .attach('file', 'test/fixtures/valid.jpg')
+        .end(function(err, res) {
+          file = res.body;
+
+          api.post('/api/v1/files')
+            .field('token_key', valid_token.key)
+            .field('file_key', file.key)
+            .attach('file', 'test/fixtures/valid.jpg')
+            .end(function(err, res) {
+              expect(res.status).to.be.equal(status.UNPROCESSABLE_ENTITY);
+              done();
+            });
+        });
     });
   });
 
@@ -115,7 +121,9 @@ describe('File Upload', function() {
           expect(fs.existsSync(res.body.path)).to.be.true;
           expect(res.body.key).to.be.equal('unique_key');
           expect(res.body.created_at).to.not.be.null;
-                    
+          expect(res.body.md5Digest).to.be.equal('0acda6a8d205ba80edfc8e8d92044aba');
+          expect(res.body.sha1Digest).to.be.equal('e292f0b08df083e13c444f43c5d4efa0a3ad1712');
+
           done();
         });      
     });
