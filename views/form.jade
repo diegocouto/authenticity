@@ -1,0 +1,11 @@
+div(class="row")
+  div(class="twelve columns")
+    form(name="checker")
+      div(class="row form-control", ng-class="{active: focused}", focus-input)
+        label(for="file-key") File key
+        input(type="text", id="file-key", class="u-full-width", ng-model="file.key", ng-focus="focused=true", ng-blur="focused=false", required)
+
+      div(class="row")
+        button(type="submit", class="button-primary u-full-width", ng-click="checkDocument()", ng-disabled="checker.$invalid") 
+          i(class="iconicstroke-spin-alt spin", ng-show="loading")
+          span Check
