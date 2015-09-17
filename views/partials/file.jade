@@ -10,6 +10,12 @@ div(class="row")
           dd(ng-show="file.description") {{ file.description }}
 
           dt Created at 
-          dd {{ file.createdAt }}
+          dd {{ file.createdAt | date:'yyyy-mm-dd H:mm' }}
 
-    a(href="{{file.path}}", class="button button-primary u-full-width") Open file
+          dt MD5 digest 
+          dd {{ file.md5Digest }}
+
+          dt SHA-1 digest 
+          dd {{ file.sha1Digest }}
+
+    a(href="files/{{ file.key }}/download", target="_self", class="button button-primary u-full-width") Open file

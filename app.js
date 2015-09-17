@@ -24,8 +24,11 @@ app.use('/', routes);
 app.use('/api/v1/', files);
 
 app.get('/partials/:name', function (req, res) {
-    var name = req.params.name;
-    res.render('partials/' + name);
+    res.render('partials/' + req.params.name);
+});
+
+app.all('/files/*', function(req, res, next) {
+  res.render('index', {'root': 'app/views/', title: 'Authenticity'});
 });
 
 // catch 404 and forward to error handler

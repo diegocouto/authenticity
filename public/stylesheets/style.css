@@ -34,7 +34,7 @@ body {
 
 a { color: #00B7FF; }
 
-#logo-container { text-align: center; padding: 20px }
+#logo-container { text-align: center; padding: 20px; margin-bottom: 40px }
 #logo i { font-style: normal !important; }
 #logo {
   font-size: 4em;
@@ -57,7 +57,7 @@ a { color: #00B7FF; }
   color: #8297AD;
   text-align: center;
   font-size: 1.8em;
-  padding: 40px 10px;
+  padding: 0px 10px 40px;
   margin-bottom: 0;
 }
 
@@ -110,13 +110,34 @@ button[type="submit"], .button {
   font-weight: bold;
 }
 .card-header p { margin-bottom: 0 }
-.card-content { padding: 20px; }
+.card-content { padding: 0 20px 20px; }
 
 dl { margin: 0; }
-dt { font-weight: bold; }
+dt { 
+  font-weight: bold;
+  margin-top: 20px;
+}
 dd {
   margin: 5px 0;
   font-weight: 300;
+}
+
+.error-message h1, h2 {
+  text-align: center;
+  color: #c0392b;
+}
+.error-message h1 {
+  font-weight: bold;
+  font-size: 7em;
+  margin: 0;
+}
+.error-message h2 { color: #8297AD; }
+.error-message pre {
+  background-color: #273646;
+  border-radius: 4px;
+  padding: 25px;
+  color: #8297AD;
+  margin-top: 50px;
 }
 
 .spin {

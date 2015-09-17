@@ -67,11 +67,10 @@ router.post('/files', uploader, function(req, res, done) {
 /* GET file info by its key */
 router.get('/files/:file_key', function(req, res, done) {
   File.findOne({where: {key: req.params.file_key}}).then(function(file) {
-      if(file)
-        return res.json(file);
+    if(file)
+      return res.json(file);
 
-      res.status(status.NOT_FOUND).end();
-      done();
+    res.sendStatus(status.NOT_FOUND);
   });
 });
 
