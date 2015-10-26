@@ -6,6 +6,7 @@ var multer = require('multer');
 var config = require('config');
 var crypto = require('crypto');
 var mime = require('mime-types');
+var i18n = require('i18n');
 
 var storage = multer.diskStorage({
   destination: config.get('File.multer.dest'),
@@ -43,7 +44,7 @@ router.post('/files', uploader, function(req, res, done) {
 
   if(config.get('File.types').indexOf(req.file.mimetype) < 0)
     return File.destroyFromFS(req.file.path, function(){
-      res.status(status.UNPROCESSABLE_ENTITY).send('This file has a not allowed MIME type.').end()
+      res.status(status.UNPROCESSABLE_ENTITY).send(i18n.__('error.invalid-type')).end()
     });
 
   Token.findOne({where: {key: token_key}}).then(function(token) {

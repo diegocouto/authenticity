@@ -4,11 +4,19 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var status = require('http-status');
+var i18n = require('i18n');
 
 var routes = require('./routes/index');
 var files = require('./routes/api/v1/file');
 
 var app = express();
+
+i18n.configure({
+    locales:['en', 'pt-BR'],
+    directory: __dirname + '/locales',
+    defaultLocale: 'en',
+    objectNotation: true
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -17,6 +25,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(i18n.init);
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('models', require('./models'));
 
