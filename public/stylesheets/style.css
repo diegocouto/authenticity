@@ -5,7 +5,7 @@
 
 .alert {
   background-color: #c0392b;
-  padding: 20px;
+  padding: 20px 0;
   position: absolute;
   width: 100%;
   top: 0; left: 0;
