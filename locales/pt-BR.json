@@ -1,5 +1,23 @@
 {
+	"app": {
+		"slogan": "Uma aplicação enxuta para garantia de autenticidade de arquivos",
+		"models": {
+			"file": "Arquivo"
+		}
+	},
+	"file": {
+		"key": "Chave do arquivo",
+		"check": "Verificar",
+		"description": "Descrição",
+		"created_at": "Criado em",
+		"md5_digest": "Resumo MD5",
+		"sha1_digest": "Resumo SHA-1",
+		"open": "Abrir arquivo",
+    "not_found": "Não conseguimos encontrar nenhum arquivo com essa chave. Por favor, confirme se a chave esta correta."
+	},
 	"error": {
-		"invalid-type": "Esse arquivo contém um formato MIME inválido."
+		"404": "Não encontrado",
+		"invalid-type": "Esse arquivo contém um formato MIME inválido.",
+		"undefined": "error.undefined"
 	}
 }

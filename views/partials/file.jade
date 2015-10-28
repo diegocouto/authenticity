@@ -2,20 +2,20 @@ div(class="row")
   div(class="twelve columns")
     div(class="card")
       div(class="card-header")
-        p File \#{{file.key}}
+        p #{__('app.models.file')} \#{{file.key}}
 
       div(class="card-content")
         dl
-          dt(ng-show="file.description") Description 
+          dt(ng-show="file.description") #{__('file.description')} 
           dd(ng-show="file.description") {{ file.description }}
 
-          dt Created at 
+          dt #{__('file.created_at')} 
           dd {{ file.createdAt | date:'yyyy-mm-dd H:mm' }}
 
-          dt MD5 digest 
+          dt #{__('file.md5_digest')} 
           dd {{ file.md5Digest }}
 
-          dt SHA-1 digest 
+          dt #{__('file.sha1_digest')} 
           dd {{ file.sha1Digest }}
 
-    a(href="{{ file.key }}", target="_self", class="button button-primary u-full-width") Open file
+    a(href="{{ file.key }}", target="_self", class="button button-primary u-full-width") #{__('file.open')}

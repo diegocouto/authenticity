@@ -1,4 +1,4 @@
-var app = angular.module('docAuthenticity', ['ngRoute']);
+var app = angular.module('docAuthenticity', ['ngRoute', 'i18n']);
 
 app.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
@@ -6,6 +6,7 @@ app.config(['$routeProvider', '$locationProvider',
       .when('/', {
         templateUrl: 'partials/form',
         controller: 'checkerController',
+        resolve: { i18n : [ "i18n", function( i18n ) { return i18n.i18n(); } ] }
       })
       .when('/files/:fileKey', {
         templateUrl: 'partials/file',
@@ -15,8 +16,8 @@ app.config(['$routeProvider', '$locationProvider',
     $locationProvider.html5Mode(true);
 }]);
 
-app.controller('checkerController', ['$scope', '$http', '$location', '$rootScope', 'notify', 
-  function($scope, $http, $location, $rootScope, notify) {
+app.controller('checkerController', ['$scope', '$http', '$location', '$rootScope', 'i18n', 'notify', 
+  function($scope, $http, $location, $rootScope, i18n, notify) {
     $scope.notifications = notify
 
     $scope.checkDocument = function() {
@@ -30,7 +31,7 @@ app.controller('checkerController', ['$scope', '$http', '$location', '$rootScope
         $location.path('/files/' + $scope.file.key);
       })
       .error(function(data) {
-        notify.send('We couldn\'t find any document related to this key. It could be a typo, try to confirm the document key.');
+        notify.send(i18n.__('file.not_found'));
       })
       .finally(function(){
         $scope.loading = false;
@@ -39,17 +40,19 @@ app.controller('checkerController', ['$scope', '$http', '$location', '$rootScope
   }
 ]);
 
-app.controller('fileController', ['$scope', '$http', '$location', '$rootScope', '$routeParams', 'notify',
-  function($scope, $http, $location, $rootScope, $routeParams, notify) {
+app.controller('fileController', ['$scope', '$http', '$location', '$rootScope', '$routeParams', 'i18n', 'notify',
+  function($scope, $http, $location, $rootScope, $routeParams, i18n, notify) {
     if($rootScope.file != undefined)
       $scope.file = $rootScope.file
     else {
+      $scope.i18n = i18n;
+
       $http.get('/api/v1/files/' + $routeParams.fileKey)
         .success(function(data) {
           $scope.file = data;
         })
         .error(function(data) {
-          notify.send('We couldn\'t find any document related to this key. It could be a typo, try to confirm the document key.');
+          notify.send(i18n.__('file.not_found'));
           $location.path('/');
         });
     }

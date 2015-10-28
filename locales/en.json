@@ -1,5 +1,23 @@
 {
-  "error": {
-    "invalid-type": "This file has a not allowed MIME type."
-  }
+	"app": {
+		"slogan": "A lightweight application to guarantee files authenticity",
+		"models": {
+			"file": "File"
+		}
+	},
+	"file": {
+		"key": "File key",
+		"check": "Check",
+		"description": "Description",
+		"created_at": "Created at",
+		"md5_digest": "MD5 digest",
+		"sha1_digest": "SHA-1 digest",
+		"open": "Open file",
+		"not_found": "We couldn't find any document related to this key. It could be a typo, try to confirm the document key"
+	},
+	"error": {
+		"404": "Not Found",
+		"invalid-type": "This file has a not allowed MIME type.",
+		"undefined": "error.undefined"
+	}
 }

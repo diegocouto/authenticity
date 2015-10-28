@@ -14,7 +14,6 @@ var app = express();
 i18n.configure({
     locales:['en', 'pt-BR'],
     directory: __dirname + '/locales',
-    defaultLocale: 'en',
     objectNotation: true
 });
 
@@ -29,6 +28,11 @@ app.use(i18n.init);
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('models', require('./models'));
 
+app.use(function(req, res, next){
+  res.setLocale('en');
+  next();
+});
+
 app.use('/', routes);
 app.use('/api/v1/', files);
 
@@ -38,6 +42,11 @@ app.get('/partials/:name', function (req, res) {
 
 app.all('/files/*', function(req, res, next) {
   res.render('index', {'root': 'app/views/', title: 'Authenticity'});
+});
+
+app.get('/i18n/:locale', function (req, res) {
+  var locale = req.params.locale;
+  res.sendFile(path.join(__dirname, 'locales', locale + '.json'));
 });
 
 // catch 404 and forward to error handler
